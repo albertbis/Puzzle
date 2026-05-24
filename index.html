@@ -283,13 +283,25 @@ function makeSVG(i,flip){
 }
 
 function scatter(n,aW,aH){
-  const cW=Math.floor(aW/SC),cH=Math.floor(aH/SR),tot=SR*SC;
-  const idx=Array.from({length:tot},(_,i)=>i);
+  // Divide area in a grid, place one tile per cell with small jitter
+  const cols=Math.ceil(Math.sqrt(n*aW/aH));
+  const rows=Math.ceil(n/cols);
+  const cW=Math.floor(aW/cols),cH=Math.floor(aH/rows);
+  // Jitter: max 15% of cell size, but never push tile out of cell bounds
+  const jx=Math.min((cW-PW-2*PAD)*0.4,18);
+  const jy=Math.min((cH-PH-2*PAD)*0.4,18);
+  const idx=Array.from({length:rows*cols},(_,i)=>i);
   for(let i=idx.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
   return Array.from({length:n},(_,i)=>{
-    const ci=idx[i],col=ci%SC,row=Math.floor(ci/SC),cx=col*cW,cy=row*cH;
-    const mx=Math.max(0,(cW-PW)/2+30),my=Math.max(0,(cH-PH)/2+30);
-    return{x:Math.max(PAD,Math.min(aW-PW-PAD,cx+(cW-PW)/2+rnd(-mx,mx))),y:Math.max(PAD,Math.min(aH-PH-PAD,cy+(cH-PH)/2+rnd(-my,my))),rot:rnd(-20,20)};
+    const ci=idx[i],col=ci%cols,row=Math.floor(ci/cols);
+    const bx=col*cW,by=row*cH;
+    const cx=bx+(cW-PW)/2+rnd(-jx,jx);
+    const cy=by+(cH-PH)/2+rnd(-jy,jy);
+    return{
+      x:Math.max(PAD,Math.min(aW-PW-PAD,cx)),
+      y:Math.max(PAD,Math.min(aH-PH-PAD,cy)),
+      rot:rnd(-15,15)
+    };
   });
 }
 
