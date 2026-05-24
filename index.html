@@ -60,6 +60,7 @@ tr:hover td{background:#fafafa;}
 .tessera-face{position:absolute;inset:0;backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;}
 .tessera-back{transform:rotateY(180deg);}
 .tessera-wrap:hover .tessera-inner:not(.flipped) svg{opacity:0.85;}
+.tessera-wrap:hover{z-index:500!important;}
 
 #prog-bar{width:180px;height:3px;background:#ddd;border-radius:2px;overflow:hidden;margin:0 auto 10px;}
 #prog-fill{height:100%;background:#555;width:0%;transition:width 0.3s linear;border-radius:2px;}
@@ -287,7 +288,7 @@ function scatter(n,aW,aH){
   for(let i=idx.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
   return Array.from({length:n},(_,i)=>{
     const ci=idx[i],col=ci%SC,row=Math.floor(ci/SC),cx=col*cW,cy=row*cH;
-    const mx=Math.max(0,(cW-PW)/2-6),my=Math.max(0,(cH-PH)/2-6);
+    const mx=Math.max(0,(cW-PW)/2+20),my=Math.max(0,(cH-PH)/2+20);
     return{x:Math.max(PAD,Math.min(aW-PW-PAD,cx+(cW-PW)/2+rnd(-mx,mx))),y:Math.max(PAD,Math.min(aH-PH-PAD,cy+(cH-PH)/2+rnd(-my,my))),rot:rnd(-20,20)};
   });
 }
@@ -358,7 +359,7 @@ function avvia(){
       if(inn.classList.contains("flipped")||done||busy)return;
       const d=gameData[di];
       showPhoto(d.classe,d.photo,()=>{
-        inn.classList.add("flipped");flipped++;
+        inn.classList.add("flipped");wrap.style.zIndex=200+flipped;flipped++;
         document.getElementById("prog-fill").style.width=Math.round(flipped/gameData.length*100)+"%";
         setSt(`${d.classe} → "${d.lettera}" (${flipped}/${gameData.length})`);
         if(flipped===gameData.length)timers.push(setTimeout(()=>{setSt("Tutte scoperte! Componi il puzzle.");document.getElementById("btn-puzzle").style.display="inline-block";},400));
