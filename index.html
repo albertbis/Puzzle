@@ -52,7 +52,7 @@ tr:hover td{background:#fafafa;}
 .photo-lbl{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);color:#fff;font-size:18px;font-weight:500;padding:6px 22px;border-radius:8px;white-space:nowrap;}
 .cdown{position:absolute;top:16px;right:20px;background:rgba(0,0,0,0.5);color:#fff;font-size:15px;padding:4px 12px;border-radius:8px;}
 
-#main-area{position:relative;width:100%;height:500px;margin-bottom:10px;overflow:visible;}
+#main-area{position:relative;width:100%;height:680px;margin-bottom:10px;overflow:visible;}
 .tessera-wrap{position:absolute;cursor:pointer;}
 .tessera-scene{width:100%;height:100%;perspective:800px;}
 .tessera-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.65s cubic-bezier(.4,0,.2,1);}
@@ -150,7 +150,7 @@ const TABS=[
   {l:"in",r:"flat",t:"in",b:"flat"}
 ];
 
-const PW=78,PH=96,TAB=10,TH=11,PAD=TH+3,ROW1=6,ROW2=5,COMPOSE=20000,SR=3,SC=4;
+const PW=117,PH=144,TAB=15,TH=16,PAD=TH+3,ROW1=6,ROW2=5,COMPOSE=20000,SR=3,SC=4;
 const cfg={};
 CLASSI.forEach(cl=>cfg[cl]={lettera:"",photo:null});
 let gameData=[],timers=[],rafs=[],wraps=[],inners=[],flipped=0,done=false,busy=false;
@@ -277,8 +277,8 @@ function makePath(tabs,flip){
 function makeSVG(i,flip){
   const c=PAL[gameData[i].palIdx],d=gameData[i],path=makePath(TABS[i],flip),vw=PW+2*PAD,vh=PH+2*PAD;
   const ff="-apple-system,sans-serif";
-  if(!flip)return `<svg viewBox="${-PAD} ${-PAD} ${vw} ${vh}" width="${vw}" height="${vh}" style="display:block;overflow:visible"><path d="${path}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/><text x="${PW/2}" y="${PH/2-8}" text-anchor="middle" dominant-baseline="middle" font-family="${ff}" font-size="16" font-weight="500" fill="${c.txt}">${d.classe}</text><text x="${PW/2}" y="${PH/2+11}" text-anchor="middle" dominant-baseline="middle" font-family="${ff}" font-size="10" fill="${c.txt}" opacity="0.6">classe</text></svg>`;
-  return `<svg viewBox="${-PAD} ${-PAD} ${vw} ${vh}" width="${vw}" height="${vh}" style="display:block;overflow:visible"><path d="${path}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/><text x="${PW/2}" y="${PH/2-8}" text-anchor="middle" dominant-baseline="middle" font-family="${ff}" font-size="40" font-weight="500" fill="${c.txt}">${d.lettera}</text><text x="${PW/2}" y="${PH/2+22}" text-anchor="middle" dominant-baseline="middle" font-family="${ff}" font-size="10" fill="${c.txt}" opacity="0.55">${d.classe}</text></svg>`;
+  if(!flip)return `<svg viewBox="${-PAD} ${-PAD} ${vw} ${vh}" width="${vw}" height="${vh}" style="display:block;overflow:visible"><path d="${path}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/><text x="${PW/2}" y="${PH/2-12}" text-anchor="middle" dominant-baseline="middle" font-family="${ff}" font-size="22" font-weight="500" fill="${c.txt}">${d.classe}</text><text x="${PW/2}" y="${PH/2+16}" text-anchor="middle" dominant-baseline="middle" font-family="${ff}" font-size="10" fill="${c.txt}" opacity="0.6">classe</text></svg>`;
+  return `<svg viewBox="${-PAD} ${-PAD} ${vw} ${vh}" width="${vw}" height="${vh}" style="display:block;overflow:visible"><path d="${path}" fill="${c.fill}" stroke="${c.stroke}" stroke-width="1.5"/><text x="${PW/2}" y="${PH/2-12}" text-anchor="middle" dominant-baseline="middle" font-family="${ff}" font-size="60" font-weight="500" fill="${c.txt}">${d.lettera}</text><text x="${PW/2}" y="${PH/2+32}" text-anchor="middle" dominant-baseline="middle" font-family="${ff}" font-size="14" fill="${c.txt}" opacity="0.55">${d.classe}</text></svg>`;
 }
 
 function scatter(n,aW,aH){
@@ -293,7 +293,7 @@ function scatter(n,aW,aH){
 }
 
 function targets(aW){
-  const sx1=Math.max(PAD,(aW-ROW1*PW)/2),sx2=Math.max(PAD,(aW-ROW2*PW)/2),ty1=310,ty2=310+PH+TH+6;
+  const sx1=Math.max(PAD,(aW-ROW1*PW)/2),sx2=Math.max(PAD,(aW-ROW2*PW)/2),ty1=380,ty2=380+PH+TH+6;
   return gameData.map((_,i)=>{const r2=i>=ROW1,col=r2?(i-ROW1):i,sx=r2?sx2:sx1;return{x:sx+col*PW-PAD,y:(r2?ty2:ty1)-PAD};});
 }
 
