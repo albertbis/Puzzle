@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOLIDARIETÀ – Puzzle delle classi</title>
+<title>Puzzle alfabetico</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f5f4f0;color:#1a1a1a;min-height:100vh;padding:16px;}
@@ -95,7 +95,7 @@ tr:hover td{background:#fafafa;}
   </div>
 </div>
 
-<h1>Puzzle — SOLIDARIETÀ</h1>
+<h1>Puzzle alfabetico</h1>
 
 <div id="setup-panel">
   <div id="setup-header">
@@ -305,8 +305,8 @@ function scatter(n,aW,aH){
   });
 }
 
-function targets(aW){
-  const aH2=area.offsetHeight||600,midY=Math.max(aH2/2-PH-TH,PH/2),sx1=Math.max(PAD,(aW-ROW1*PW)/2),sx2=Math.max(PAD,(aW-ROW2*PW)/2),ty1=midY,ty2=midY+PH+TH+6;
+function targets(aW,aH){
+  const midY=Math.max(aH/2-PH-TH,PH/2),sx1=Math.max(PAD,(aW-ROW1*PW)/2),sx2=Math.max(PAD,(aW-ROW2*PW)/2),ty1=midY,ty2=midY+PH+TH+6;
   return gameData.map((_,i)=>{const r2=i>=ROW1,col=r2?(i-ROW1):i,sx=r2?sx2:sx1;return{x:sx+col*PW-PAD,y:(r2?ty2:ty1)-PAD};});
 }
 
@@ -385,7 +385,7 @@ function avvia(){
 function faiPuzzle(){
   if(done)return;done=true;clearAll();
   const area=document.getElementById("main-area");document.getElementById("btn-puzzle").style.display="none";
-  const aW=area.offsetWidth||640,tgts=targets(aW),n=gameData.length;
+  const aW=area.offsetWidth||640,aH=area.offsetHeight||600,tgts=targets(aW,aH),n=gameData.length;
   const order=gameData.map((_,i)=>i);for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
   const base=COMPOSE/n;const delays=[];let acc=0;
   order.forEach((_,s)=>{delays.push(acc);if(s===n-3)acc+=base*2.2;else if(s===n-2)acc+=base*2.8;else acc+=base*rnd(0.65,1.1);});
