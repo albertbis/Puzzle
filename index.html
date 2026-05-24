@@ -44,8 +44,10 @@ tr:hover td{background:#fafafa;}
 #btn-start:disabled{background:#aaa;cursor:default;}
 
 #game-panel{display:none;max-width:700px;margin:0 auto;}
-#photo-overlay{display:none;position:fixed;inset:0;z-index:1000;align-items:center;justify-content:center;background:rgba(0,0,0,0.82);}
-#photo-overlay.active{display:flex;}
+#photo-overlay{display:none;position:fixed;inset:0;z-index:1000;align-items:center;justify-content:center;background:rgba(0,0,0,0.82);opacity:0;transition:opacity 2s ease;}
+#photo-overlay.visible{opacity:1;}
+#photo-overlay img{transition:transform 2s ease,opacity 2s ease;transform:scale(0.96);opacity:0;}
+#photo-overlay.visible img{transform:scale(1);opacity:1;}
 #photo-overlay img{max-width:92vw;max-height:82vh;border-radius:12px;object-fit:contain;}
 .photo-lbl{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);color:#fff;font-size:18px;font-weight:500;padding:6px 22px;border-radius:8px;white-space:nowrap;}
 .cdown{position:absolute;top:16px;right:20px;background:rgba(0,0,0,0.5);color:#fff;font-size:15px;padding:4px 12px;border-radius:8px;}
@@ -314,9 +316,23 @@ function pulse(wrap,cb){
 
 function showPhoto(cl,url,cb){
   if(!url){cb();return;}if(busy)return;busy=true;
-  document.getElementById("photo-img").src=url;document.getElementById("photo-lbl").textContent="Classe "+cl;
-  const cd=document.getElementById("cdown");cd.textContent="3";document.getElementById("photo-overlay").classList.add("active");
-  let n=3;const t=setInterval(()=>{n--;cd.textContent=n>0?n:"";if(n<=0){clearInterval(t);document.getElementById("photo-overlay").classList.remove("active");busy=false;cb();}},1000);
+  const ov=document.getElementById("photo-overlay");
+  const cd=document.getElementById("cdown");
+  document.getElementById("photo-img").src=url;
+  document.getElementById("photo-lbl").textContent="Classe "+cl;
+  cd.textContent="";
+  ov.style.display="flex";
+  // Fade IN: 2 secondi
+  requestAnimationFrame(()=>requestAnimationFrame(()=>ov.classList.add("visible")));
+  setTimeout(()=>{
+    // Visualizzazione: 2 secondi con countdown
+    let n=2;cd.textContent=n;
+    const t=setInterval(()=>{n--;cd.textContent=n>0?n:"";if(n<=0){clearInterval(t);
+      // Fade OUT: 2 secondi
+      ov.classList.remove("visible");
+      setTimeout(()=>{ov.style.display="none";busy=false;cb();},2000);
+    }},1000);
+  },2000);
 }
 
 function avvia(){
