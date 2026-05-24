@@ -52,7 +52,7 @@ tr:hover td{background:#fafafa;}
 .photo-lbl{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);color:#fff;font-size:18px;font-weight:500;padding:6px 22px;border-radius:8px;white-space:nowrap;}
 .cdown{position:absolute;top:16px;right:20px;background:rgba(0,0,0,0.5);color:#fff;font-size:15px;padding:4px 12px;border-radius:8px;}
 
-#main-area{position:relative;width:100%;height:680px;margin-bottom:10px;overflow:visible;}
+#main-area{position:relative;width:100%;height:calc(100vh - 220px);min-height:600px;margin-bottom:10px;overflow:visible;}
 .tessera-wrap{position:absolute;cursor:pointer;}
 .tessera-scene{width:100%;height:100%;perspective:800px;}
 .tessera-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.65s cubic-bezier(.4,0,.2,1);}
@@ -151,7 +151,7 @@ const TABS=[
   {l:"in",r:"flat",t:"in",b:"flat"}
 ];
 
-const PW=117,PH=144,TAB=15,TH=16,PAD=TH+3,ROW1=6,ROW2=5,COMPOSE=20000,SR=3,SC=4;
+const PW=117,PH=144,TAB=15,TH=16,PAD=TH+3,ROW1=6,ROW2=5,COMPOSE=20000,SR=4,SC=3;
 const cfg={};
 CLASSI.forEach(cl=>cfg[cl]={lettera:"",photo:null});
 let gameData=[],timers=[],rafs=[],wraps=[],inners=[],flipped=0,done=false,busy=false;
@@ -288,13 +288,13 @@ function scatter(n,aW,aH){
   for(let i=idx.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
   return Array.from({length:n},(_,i)=>{
     const ci=idx[i],col=ci%SC,row=Math.floor(ci/SC),cx=col*cW,cy=row*cH;
-    const mx=Math.max(0,(cW-PW)/2+20),my=Math.max(0,(cH-PH)/2+20);
+    const mx=Math.max(0,(cW-PW)/2+30),my=Math.max(0,(cH-PH)/2+30);
     return{x:Math.max(PAD,Math.min(aW-PW-PAD,cx+(cW-PW)/2+rnd(-mx,mx))),y:Math.max(PAD,Math.min(aH-PH-PAD,cy+(cH-PH)/2+rnd(-my,my))),rot:rnd(-20,20)};
   });
 }
 
 function targets(aW){
-  const sx1=Math.max(PAD,(aW-ROW1*PW)/2),sx2=Math.max(PAD,(aW-ROW2*PW)/2),ty1=380,ty2=380+PH+TH+6;
+  const aH2=area.offsetHeight||600,midY=Math.max(aH2/2-PH-TH,PH/2),sx1=Math.max(PAD,(aW-ROW1*PW)/2),sx2=Math.max(PAD,(aW-ROW2*PW)/2),ty1=midY,ty2=midY+PH+TH+6;
   return gameData.map((_,i)=>{const r2=i>=ROW1,col=r2?(i-ROW1):i,sx=r2?sx2:sx1;return{x:sx+col*PW-PAD,y:(r2?ty2:ty1)-PAD};});
 }
 
