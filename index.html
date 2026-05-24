@@ -28,6 +28,7 @@ tr:hover td{background:#fafafa;}
 
 .photo-btn{font-size:11px;cursor:pointer;border:1px solid #ccc;border-radius:6px;padding:4px 10px;background:#fff;color:#555;display:inline-block;}
 .photo-btn.loaded{border-color:#0f6e56;color:#0f6e56;background:#e1f5ee;}
+.photo-btn.loaded:hover{background:#c8ede2;border-color:#085041;}
 .photo-btn input{display:none;}
 
 .stato-cell{font-size:11px;color:#999;}
@@ -170,16 +171,16 @@ function buildSetup(){
     const blank=document.createElement("option");blank.value="";blank.textContent="—";sel.appendChild(blank);
     [...PAROLA].forEach(l=>{const o=document.createElement("option");o.value=l;o.textContent=l;sel.appendChild(o);});
     sel.value=cfg[cl].lettera;
-    sel.onchange=()=>{cfg[cl].lettera=sel.value;refreshSetup();};
+    sel.onchange=()=>{cfg[cl].lettera=sel.value;refreshSetup();salvaConfigurazione();};
     t1.appendChild(sel);tr.appendChild(t1);
     const t2=document.createElement("td");
     const lbl=document.createElement("label");lbl.className="photo-btn"+(cfg[cl].photo?" loaded":"");lbl.id="plbl-"+cl;
-    lbl.textContent=cfg[cl].photo?"✓ Caricata":"📷 Carica foto";
+    lbl.textContent=cfg[cl].photo?"✓ Caricata  🔄":"📷 Carica foto";
     const inp=document.createElement("input");inp.type="file";inp.accept="image/*";
     inp.onchange=function(){
       if(!this.files[0])return;
       const r=new FileReader();
-      r.onload=e=>{cfg[cl].photo=e.target.result;lbl.textContent="✓ Caricata";lbl.classList.add("loaded");refreshSetup();};
+      r.onload=e=>{cfg[cl].photo=e.target.result;lbl.textContent="✓ Caricata  🔄";lbl.classList.add("loaded");refreshSetup();salvaConfigurazione();};
       r.readAsDataURL(this.files[0]);
     };
     lbl.appendChild(inp);t2.appendChild(lbl);tr.appendChild(t2);
