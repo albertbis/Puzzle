@@ -183,7 +183,13 @@ function buildSetup(){
     inp.onchange=function(){
       if(!this.files[0])return;
       const r=new FileReader();
-      r.onload=e=>{cfg[cl].photo=e.target.result;lbl.textContent="✓ Caricata  🔄";lbl.classList.add("loaded");refreshSetup();salvaConfigurazione();};
+      r.onload=e=>{
+  comprimi(e.target.result, 800, 0.55, function(small){
+    cfg[cl].photo=small;
+    lbl.textContent="✓ Caricata  🔄";lbl.classList.add("loaded");
+    refreshSetup();salvaConfigurazione();
+  });
+};
       r.readAsDataURL(this.files[0]);
     };
     lbl.appendChild(inp);t2.appendChild(lbl);tr.appendChild(t2);
@@ -402,6 +408,19 @@ function faiPuzzle(){
 }
 
 // ---- PERSISTENZA localStorage ----
+function comprimi(dataURL, maxW, qualita, cb) {
+  const img = new Image();
+  img.onload = function() {
+    const scale = Math.min(1, maxW / img.width);
+    const w = Math.round(img.width * scale);
+    const h = Math.round(img.height * scale);
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    c.getContext('2d').drawImage(img, 0, 0, w, h);
+    cb(c.toDataURL('image/jpeg', qualita));
+  };
+  img.src = dataURL;
+}
 const STORAGE_KEY = "solidarieta_cfg_v1";
 
 function salvaConfigurazione() {
